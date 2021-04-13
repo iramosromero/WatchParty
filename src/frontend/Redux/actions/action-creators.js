@@ -73,7 +73,9 @@ export const signIn = (payload) => {
       headers: { 'Content-Type': 'application/json' },
     })
       .then((response) => {
-        const { token } = response.data;
+        console.log(`response:  ${JSON.stringify(response)}`);
+        const token = response.data;
+        console.log(`setting local storage token to: ${token}`);
         localStorage.setItem('USER-TOKEN', token);
         dispatch({ type: SIGN_IN_SUCCESS });
         //history.push('/home');

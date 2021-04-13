@@ -18,7 +18,7 @@ router.post('/signin', async (req, res) => {
     return res.status(401).send('Incorrect email or password');
   }
   const token = jwt.sign({ _id: user.id }, config.get('PrivateKey'));
-  res.header('x-auth-token', token).send(user);
+  res.send(token);
 });
 
 module.exports = router;

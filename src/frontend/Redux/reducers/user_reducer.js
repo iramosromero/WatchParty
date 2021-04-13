@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import jwt from 'jsonwebtoken';
 import
 {
@@ -13,7 +14,11 @@ import
 } from '../actions/action-types';
 
 export const isValidToken = (token) => {
+  if (!token) {
+    token = localStorage.getItem('USER-TOKEN');
+  }
   const decoded = jwt.decode(token);
+  console.log(token);
   return new Date(decoded.exp * 1000) > new Date() ? decoded : null;
 };
 
