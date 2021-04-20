@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import jwt from 'jsonwebtoken';
+// import jwt from 'jsonwebtoken';
 import
 {
   SIGN_IN_FAILURE,
@@ -12,7 +12,7 @@ import
   SIGN_OUT_REQUEST,
   SIGN_OUT_SUCCESS,
 } from '../actions/action-types';
-
+/*
 export const isValidToken = (token) => {
   if (!token) {
     token = localStorage.getItem('USER-TOKEN');
@@ -21,11 +21,11 @@ export const isValidToken = (token) => {
   console.log(token);
   return new Date(decoded.exp * 1000) > new Date() ? decoded : null;
 };
-
+*/
 const initialState = {
-  currentUser: localStorage.getItem('USER-TOKEN')
-    ? isValidToken(localStorage.getItem('USER-TOKEN'))
-    : null,
+  currentUser: localStorage.getItem('USER-TOKEN'),
+  // ? isValidToken(localStorage.getItem('USER-TOKEN'))
+  // : null,
   token: localStorage.getItem('USER-TOKEN')
     ? localStorage.getItem('USER-TOKEN')
     : null,

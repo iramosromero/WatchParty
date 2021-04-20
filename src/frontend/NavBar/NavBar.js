@@ -8,7 +8,7 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import { Button } from "../Button";
+// import { Button } from "../Button";
 import { MenuItems } from './MenuItems';
 
 import './NavBar.css';
@@ -52,7 +52,7 @@ class Navbar extends Component {
             );
           })}
         </ul>
-        <Button>sign in</Button>
+
       </nav>
     );
   }

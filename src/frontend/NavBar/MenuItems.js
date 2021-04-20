@@ -24,6 +24,11 @@ export const MenuItems = [
     url: 'sign-in',
     cName: 'nav-links',
   },
+  {
+    title: 'Sign up',
+    url: 'sign-up',
+    cName: 'nav-links',
+  },
 ];
 
 export default MenuItems;

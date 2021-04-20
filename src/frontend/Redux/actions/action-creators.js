@@ -3,6 +3,7 @@
 /* eslint-disable spaced-comment */
 /* eslint-disable func-names */
 import axios from 'axios';
+//import { useHistory } from 'react-router-dom';
 import {
   SIGN_IN_FAILURE,
   SIGN_IN_REQUEST,
@@ -29,18 +30,19 @@ const signUpFailure = (error) => ({
   payload: error,
 });
 
-export const signUp = (user, history) => function (dispatch) {
+export const signUp = (user) => function (dispatch) {
+  //const history = useHistory();
   console.log('HIkrfjsgkoglj');
   dispatch(signUpRequest());
   axios({
     method: 'post',
-    url: '/signUp',
+    url: 'http://localhost:4000/users/add',
     data: user,
   })
     .then((response) => {
       const { data } = response.data;
       dispatch(signUpSuccess(data));
-      history.push('/');
+      //history.push('/');
     })
     .catch((error) => {
       console.log(error);
