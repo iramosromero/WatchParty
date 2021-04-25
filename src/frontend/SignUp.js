@@ -11,7 +11,7 @@
 // eslint-disable-next-line react/no-deprecated
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-//import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { signUp } from './Redux/actions/action-creators';
 
@@ -24,11 +24,11 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  createuser: (firstname, lastname, username, password) => dispatch(
-    signUp({
+  createuser(firstname, lastname, username, password, history) {
+    dispatch(signUp({
       firstname, lastname, username, password,
-    }),
-  ),
+    }, history));
+  },
 });
 
 const SignUp = ({ createuser }) => {
@@ -71,6 +71,8 @@ const SignUp = ({ createuser }) => {
     // eslint-disable-next-line react/no-deprecated
     createuser: PropTypes.func.isRequired,
   };
+
+  const history = useHistory();
   return (
     <form
       className="Center"
@@ -78,7 +80,7 @@ const SignUp = ({ createuser }) => {
       onChange={(nextValue) => setValue(nextValue)}
       onSubmit={(e) => {
         e.preventDefault();
-        createuser(firstname, lastname, username, password);
+        createuser(firstname, lastname, username, password, history);
       }}
     >
       <div className="form-inner">

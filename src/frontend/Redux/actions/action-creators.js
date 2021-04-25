@@ -30,7 +30,7 @@ const signUpFailure = (error) => ({
   payload: error,
 });
 
-export const signUp = (user) => function (dispatch) {
+export const signUp = (user, history) => function (dispatch) {
   //const history = useHistory();
   console.log('HIkrfjsgkoglj');
   dispatch(signUpRequest());
@@ -42,7 +42,7 @@ export const signUp = (user) => function (dispatch) {
     .then((response) => {
       const { data } = response.data;
       dispatch(signUpSuccess(data));
-      //history.push('/');
+      history.push('/');
     })
     .catch((error) => {
       console.log(error);
@@ -107,10 +107,11 @@ export const signOutFailure = function () {
 };
 
 export const signOut = function (history) {
+  console.log('in Signout');
   return function (dispatch) {
     dispatch(signOutRequest());
     localStorage.clear();
-    history.push('/signin');
+    history.push('/Sign-in');
     if (localStorage.getItem('USER_TOKEN')) {
       dispatch(signOutFailure());
     } else {

@@ -6,6 +6,7 @@ import NavBar from './frontend/NavBar/NavBar';
 import Home from './frontend/home';
 import LoginForm from './frontend/LoginForm';
 import signUp from './frontend/SignUp';
+import signOut from './frontend/SignOut';
 import Sport from './frontend/Sport';
 import About from './frontend/About';
 import Forum from './frontend/Forum';
@@ -23,6 +24,7 @@ function App() {
         <Route path="/Forum" component={Forum} />
         <Route path="/Sign-in" component={LoginForm} />
         <Route path="/Sign-up" component={signUp} />
+        <Route path="/Sign-out" component={signOut} />
       </div>
     </Router>
   );
