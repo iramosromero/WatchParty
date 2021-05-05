@@ -23,6 +23,7 @@ const userSchema = new Schema({
     required: true,
     trim: true,
   },
+  favoritedTeams: Array,
 }, {
   timestamps: true,
 });

@@ -33,8 +33,10 @@ app.get('/', (req, res) => {
 
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
+const teamRouter = require('./routes/team');
 
 app.use('/users', usersRouter);
 app.use('/auth', authRouter);
+app.use('/team', teamRouter);
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
