@@ -9,6 +9,8 @@ import {
 import React, { Component } from 'react';
 
 import TeamListItem from './TeamListItem';
+
+const authFetch = require('./authFetch');
 // import { useParams } from 'react-router-dom';
 
 class Team extends Component {
@@ -42,6 +44,10 @@ class Team extends Component {
       .then((data) => {
         this.setState({ teamData: data });
       });
+
+    authFetch('/team/myFavoriteTeams')
+      .then((response) => { this.setState({ favoritedTeams: response }); })
+      .catch((error) => console.log(error));
   }
 
   handleFavorite(idTeam) {
@@ -49,8 +55,12 @@ class Team extends Component {
     const index = favoritedTeams.indexOf(idTeam);
     const isFavorite = index !== -1;
     if (isFavorite) {
+      authFetch('/team/myFavoriteTeams', 'DELETE', { idTeam })
+        .catch((error) => console.log(error));
       favoritedTeams.splice(index, 1);
     } else {
+      authFetch('/team/myFavoriteTeams', 'PUT', { idTeam })
+        .catch((error) => console.log(error));
       favoritedTeams.push(idTeam);
     }
     this.setState({ favoritedTeams });
