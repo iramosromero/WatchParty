@@ -27,7 +27,7 @@ class TeamImg extends Component {
   render() {
     const team = this.state.teamDetails;
     return (
-      <Box align={this.props.start ? this.props.start : this.props.end} justify="end" height="xxsmall" width="small" background="brand">
+      <Box align={this.props.start ? this.props.start : this.props.end} justify="end" height="xxsmall" width="small">
         <Image
           alignSelf={this.props.start ? this.props.start : this.props.end}
           fit="contain"

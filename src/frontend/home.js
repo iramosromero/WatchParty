@@ -11,14 +11,14 @@
 import React, { Component } from 'react';
 // import { Button, ButtonToolbar, Dropdown } from 'rsuite';
 import {
-  Button, Select, Card, CardHeader, CardBody, CardFooter, Grid, Box,
+  Select, Card, CardHeader, Grid, Box,
 } from 'grommet';
-import {
-  Favorite, ShareOption,
-} from 'grommet-icons';
+
 import './home.css';
 import thesportsdb from 'thesportsdb';
 import TeamImg from './TeamImg';
+
+const authFetch = require('./authFetch');
 
 class Home extends Component {
   constructor(props) {
@@ -64,21 +64,35 @@ class Home extends Component {
       hook = 'l=NBA';
     } else if (sports === 'EPL') {
       hook = 'l=English_Premier_League';
-    } else if (sports === 'NFL') {
-      hook = 'l=NFL';
     } else if (sports === 'NHL') {
       hook = 'l=NHL';
     } else if (sports === 'MLB') {
       hook = 'l=MLB';
     }
-    console.log(hook);
-    const apiUrl = `https://www.thesportsdb.com/api/v1/json/40130162/eventsday.php?d=${this.state.today}&${hook}`;
-    fetch(apiUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({ LatestScoreData: data });
-        console.log(data);
-      });
+    if (sports !== 'Favorites') {
+      const apiUrl = `https://www.thesportsdb.com/api/v1/json/40130162/eventsday.php?d=${this.state.today}&${hook}`;
+      fetch(apiUrl)
+        .then((response) => response.json())
+        .then((data) => {
+          this.setState({ LatestScoreData: data });
+        });
+    } else {
+      const teamThis = this;
+      this.setState({ LatestScoreData: { events: [] } });
+      authFetch('/team/myFavoriteTeams')
+        .then((data) => {
+          for (let i = 0; i < data.length; i += 1) {
+            const apiUrl = `https://www.thesportsdb.com/api/v1/json/40130162/eventsnext.php?id=${data[i]}`;
+            fetch(apiUrl)
+              .then((response) => response.json())
+              .then((favData) => {
+                const favStorage = teamThis.state.LatestScoreData.events;
+                favStorage.push(favData.events[0]);
+                teamThis.setState({ LatestScoreData: { events: favStorage } });
+              });
+          }
+        });
+    }
   }
 
   toggleDropdown() {
@@ -112,8 +126,8 @@ class Home extends Component {
           }}
           gap="small"
         >
-          <Box align="start" background="brand">{games.strAwayTeam}</Box>
-          <Box align="end" background="brand">{games.strHomeTeam}</Box>
+          <Box align="start">{games.strAwayTeam}</Box>
+          <Box align="end">{games.strHomeTeam}</Box>
         </Grid>
         <Grid
           columns={{
@@ -122,8 +136,8 @@ class Home extends Component {
           }}
           gap="small"
         >
-          <Box background="brand">{games.intAwayScore}</Box>
-          <Box align="end" background="brand">{games.intHomeScore}</Box>
+          <Box>{games.intAwayScore}</Box>
+          <Box align="end">{games.intHomeScore}</Box>
         </Grid>
       </Card>
     ));
@@ -132,22 +146,11 @@ class Home extends Component {
         <div>
           <div className="centered">
             <Select
-              options={['NBA', 'EPL', 'NFL', 'MLB', 'NHL']}
+              options={['Favorites', 'NBA', 'EPL', 'MLB', 'NHL']}
               value={this.state.Sport}
               onChange={({ option }) => this.setValue(option)}
             />
           </div>
-          <Card height="small" width="small" background="light-1">
-            <CardHeader pad="medium">Header</CardHeader>
-            <CardBody pad="medium">Body</CardBody>
-            <CardFooter pad={{ horizontal: 'small' }} background="light-2">
-              <Button
-                icon={<Favorite color="#729b96" />}
-                hoverIndicator
-              />
-              <Button icon={<ShareOption color="plain" />} hoverIndicator />
-            </CardFooter>
-          </Card>
           {ListItem}
         </div>
       </div>
