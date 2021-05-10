@@ -9,7 +9,7 @@ import LoginForm from './frontend/LoginForm';
 import signUp from './frontend/SignUp';
 import signOut from './frontend/SignOut';
 import Sport from './frontend/Sport';
-import About from './frontend/About';
+import Chat from './frontend/Chat';
 import Forum from './frontend/Forum';
 import Team from './frontend/Team';
 
@@ -18,12 +18,12 @@ import './App.css';
 function App() {
   return (
     <Router>
-      <Grommet plain>
+      <Grommet>
         <div className="App">
           <NavBar />
           <Route exact path="/" component={Home} />
           <Route exact path="/Sports" component={Sport} />
-          <Route exact path="/About" component={About} />
+          <Route exact path="/Chat" component={Chat} />
           <Route exact path="/Forum" component={Forum} />
           <Route exact path="/Sign-in" component={LoginForm} />
           <Route exact path="/Sign-up" component={signUp} />

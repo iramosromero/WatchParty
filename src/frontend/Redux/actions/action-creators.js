@@ -32,7 +32,6 @@ const signUpFailure = (error) => ({
 
 export const signUp = (user, history) => function (dispatch) {
   //const history = useHistory();
-  console.log('HIkrfjsgkoglj');
   dispatch(signUpRequest());
   axios({
     method: 'post',
