@@ -49,10 +49,6 @@ class Home extends Component {
         // this.setState({ LatestScoreData: data });
         console.log(data);
       });
-    thesportsdb.getTeamDetailsById('133612')
-      .then((data) => {
-        console.log(data);
-      });
   }
 
   setValue(option) {
@@ -108,13 +104,13 @@ class Home extends Component {
     console.log(JSON.stringify(this.state.LatestScoreData.events[0]));
     const ListItem = this.state.LatestScoreData.events.map((games) => (
       <Card key={games.idEvent} style={{ display: 'inline-block', margin: '2%' }} animation="fadeIn" height="small" width="medium" pad="small" background="light-1">
-        <CardHeader justify="center" pad="small">{games.dateEvent}</CardHeader>
-        <CardHeader justify="center" pad="small">
+        <CardHeader justify="center" pad="xxsmall">{games.dateEvent}</CardHeader>
+        <CardHeader justify="center" pad="xxsmall">
           {games.strStatus}
         </CardHeader>
         <Grid
           columns={['1/2', '1/2']}
-          gap="small"
+          gap="xxsmall"
         >
           <TeamImg start="start" teamID={games.idAwayTeam} />
           <TeamImg end="end" teamID={games.idHomeTeam} />

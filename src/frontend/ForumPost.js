@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/jsx-filename-extension */
 import React, { Component } from 'react';
@@ -85,38 +86,41 @@ class ForumPost extends Component {
       </div>
     ));
     return (
-      <Box border={{ color: 'accent-2', size: 'large' }} gap="medium">
-        <Grid
-          rows={['xxsmall', 'small', 'xxsmall', 'small', 'small']}
-          areas={[
-            ['title'],
-            ['message'],
-            ['button'],
-            ['text'],
-            ['comment'],
-          ]}
-          gap="small"
-        >
-          <Box gridArea="title" background="brand">
-            {title}
-          </Box>
-          <Box gridArea="message" overflow="hidden">
-            {msgs[0].msg}
-          </Box>
-          <Box gridArea="button" direction="row" background="accent-3">
-            <Text>{owner}</Text>
-          </Box>
-          <Box style={{ background: 'linear-gradient(90deg, #964F4CFF 0%, #567572FF 100%)' }} gridArea="text" direction="row">
+      <Box>
+        <Box animation="fadeIn" border={{ color: '#964F4C', size: 'medium' }} margin="small" gap="none">
+          <Grid
+            rows={['xxsmall', 'auto', 'xxsmall']}
+            areas={[
+              ['title'],
+              ['message'],
+              ['button'],
+            ]}
+          >
+            <Box gridArea="title" background="#567572" pad="small">
+              <h1>
+                {title}
+              </h1>
+            </Box>
+            <Box style={{ minHeight: '200px' }} gridArea="message" overflow="hidden">
+              {msgs[0].msg}
+            </Box>
+            <Box gridArea="button" direction="column" background="#567572">
+              <Text style={{ paddingBottom: '3px', paddingLeft: '5px' }}>{'Author: ' + owner}</Text>
+            </Box>
+          </Grid>
+        </Box>
+        <Box margin="small" border={{ color: '#567572', size: 'medium' }}>
+          <Box style={{ background: 'linear-gradient(90deg, #964F4CFF 0%, #567572FF 100%)' }} direction="row">
             <TextArea placeholder="comment" value={chatText} onChange={(e) => this.handleTextChange(e)} />
-            <Button disabled={localUsername === '' || chatText === ''} onClick={() => this.handleButtonPress()}>
-              send
-              <Send />
+            <Button color="#964F4CFF" primary disabled={localUsername === '' || chatText === ''} onClick={() => this.handleButtonPress()}>
+              <Text color="white">send</Text>
+              <Send color="white" />
             </Button>
           </Box>
-          <Box id="scrollable" background="light-2" gridArea="comment" overflow="scroll">
+          <Box height="medium" id="scrollable" background="light-2" overflow="scroll">
             {msgList}
           </Box>
-        </Grid>
+        </Box>
       </Box>
     );
   }

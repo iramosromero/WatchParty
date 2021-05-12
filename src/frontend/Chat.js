@@ -4,7 +4,7 @@
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import {
-  Grommet, TextArea, Button, Box, Grid,
+  Grommet, TextArea, Button, Box, Grid, Text,
 } from 'grommet';
 import { Send } from 'grommet-icons';
 
@@ -76,23 +76,22 @@ class Chat extends Component {
     return (
       <Grommet>
         <Grid
-          rows={['medium', 'xxsmall']}
+          rows={['600px', 'xsmall']}
           areas={[
             ['main', 'main'],
             ['footer', 'footer'],
           ]}
-          gap="small"
         >
 
-          <Box id="scrollable" background="light-2" gridArea="main" overflow="scroll">
+          <Box pad="small" id="scrollable" background="light-2" gridArea="main" overflow="scroll">
             {msgList}
           </Box>
 
           <Box style={{ background: 'linear-gradient(90deg, #964F4CFF 0%, #567572FF 100%)' }} gridArea="footer" direction="row">
             <TextArea placeholder="What's up?" value={chatText} onChange={(e) => this.handleTextChange(e)} />
-            <Button disabled={localUsername === '' || chatText === ''} onClick={() => this.handleButtonPress()}>
-              send
-              <Send />
+            <Button style={{ padding: '2px' }} disabled={localUsername === '' || chatText === ''} onClick={() => this.handleButtonPress()}>
+              <Text color="white">send</Text>
+              <Send color="white" />
             </Button>
           </Box>
         </Grid>

@@ -11,7 +11,7 @@
 // eslint-disable-next-line react/no-deprecated
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-//import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { signIn } from './Redux/actions/action-creators';
 
@@ -24,16 +24,20 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  login: (username, password) => dispatch(signIn({ username, password })),
+  login(username, password, history) {
+    dispatch(signIn({ username, password, history }));
+  },
 });
 
-const LoginForm = ({ login }) => {
+function LoginForm({ login }) {
   const [value, setValue] = useState({
     username: '',
     password: '',
   });
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const history = useHistory();
 
   function handleChangeEmail(e) {
     console.log(e.target.value);
@@ -59,7 +63,7 @@ const LoginForm = ({ login }) => {
       onSubmit={(e) => {
         e.preventDefault();
         console.log('HELLLLLLLLLLLOOOOOOOOOOOOOOOOOOOOOOO');
-        login(username, password);
+        login(username, password, history);
       }}
     >
       <div className="form-inner">
@@ -76,6 +80,6 @@ const LoginForm = ({ login }) => {
       </div>
     </form>
   );
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

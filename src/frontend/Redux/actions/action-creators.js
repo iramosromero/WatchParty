@@ -65,12 +65,9 @@ const signInFailure = (error) => ({
 });
 */
 export const signIn = (payload) => {
-  console.log('Dedny was here first');
-  console.log(payload);
   return async function (dispatch) {
-    console.log('Dedny was here');
     dispatch(signInRequest);
-    axios.post('http://localhost:4000/auth/signin', payload, {
+    axios.post('http://localhost:4000/auth/signin', { username: payload.username, password: payload.password }, {
       headers: { 'Content-Type': 'application/json' },
     })
       .then((response) => {
@@ -79,7 +76,7 @@ export const signIn = (payload) => {
         console.log(`setting local storage token to: ${token}`);
         localStorage.setItem('USER-TOKEN', token);
         dispatch({ type: SIGN_IN_SUCCESS });
-        //history.push('/home');
+        payload.history.push('/');
       })
       .catch((error) => {
         dispatch({ type: SIGN_IN_FAILURE, payload: error });
