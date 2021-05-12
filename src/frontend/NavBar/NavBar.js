@@ -33,6 +33,7 @@ class Navbar extends Component {
   }
 
   render() {
+    const isLoggedIn = localStorage.getItem('USER-TOKEN');
     return (
       <nav className="NavbarItems">
         <h1 className="navbar-logo">
@@ -42,7 +43,8 @@ class Navbar extends Component {
           {this.state.clicked ? <FaTimes className="nav-ham" /> : <FaBars className="nav-ham" />}
         </div>
         <ul className={this.state.clicked ? 'nav-menu active' : 'nav-menu'}>
-          {MenuItems.map((item, index) => {
+          {MenuItems.filter((item) => (!item.loginRequired || isLoggedIn)
+          && !(item.hideWhenLoggedIn && isLoggedIn)).map((item, index) => {
             return (
               <li key={index}>
                 <a className={item.cName} href={item.url}>

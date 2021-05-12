@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable arrow-body-style */
 /* eslint-disable no-shadow */
 /* eslint-disable spaced-comment */
@@ -41,7 +42,7 @@ export const signUp = (user, history) => function (dispatch) {
     .then((response) => {
       const { data } = response.data;
       dispatch(signUpSuccess(data));
-      history.push('/');
+      history.push('/Sign-in');
     })
     .catch((error) => {
       console.log(error);
@@ -77,6 +78,7 @@ export const signIn = (payload) => {
         localStorage.setItem('USER-TOKEN', token);
         dispatch({ type: SIGN_IN_SUCCESS });
         payload.history.push('/');
+        location.reload();
       })
       .catch((error) => {
         dispatch({ type: SIGN_IN_FAILURE, payload: error });
@@ -108,6 +110,7 @@ export const signOut = function (history) {
     dispatch(signOutRequest());
     localStorage.clear();
     history.push('/Sign-in');
+    location.reload();
     if (localStorage.getItem('USER_TOKEN')) {
       dispatch(signOutFailure());
     } else {

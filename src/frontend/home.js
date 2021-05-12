@@ -42,12 +42,11 @@ class Home extends Component {
 
   componentDidMount() {
     thesportsdb.setApiKey(40130162);
-    const apiUrl = `https://www.thesportsdb.com/api/v1/json/40130162/eventsday.php?d=${this.state.today}&l=English_Premier_League`;
+    const apiUrl = `https://www.thesportsdb.com/api/v1/json/40130162/eventsday.php?d=${this.state.today}&l=NBA`;
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => {
-        // this.setState({ LatestScoreData: data });
-        console.log(data);
+        this.setState({ LatestScoreData: data });
       });
   }
 
