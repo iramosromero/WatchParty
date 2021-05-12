@@ -12,6 +12,8 @@ import Sport from './frontend/Sport';
 import Chat from './frontend/Chat';
 import Forum from './frontend/Forum';
 import Team from './frontend/Team';
+import ForumAdd from './frontend/ForumAdd';
+import ForumPost from './frontend/ForumPost';
 
 import './App.css';
 
@@ -29,6 +31,8 @@ function App() {
           <Route exact path="/Sign-up" component={signUp} />
           <Route exact path="/Sign-out" component={signOut} />
           <Route exact path="/Team/:league" component={Team} />
+          <Route exact path="/addForum" component={ForumAdd} />
+          <Route exact path="/Forum/:forumID" component={ForumPost} />
         </div>
       </Grommet>
     </Router>

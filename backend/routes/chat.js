@@ -1,13 +1,14 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable import/no-extraneous-dependencies */
-const jwt = require('jsonwebtoken');
-const config = require('config');
 const router = require('express').Router();
 const Chat = require('../models/chat.model');
 
-router.get('/:chatroomID', async (req, res) => {
+const global = '6098f15c0fff456a1458073f';
+
+router.get('/get/:chatroomID', async (req, res) => {
   let chatroom = req.params.chatroomID;
   if (chatroom === 'global') {
-    chatroom = '6098f15c0fff456a1458073f';
+    chatroom = global;
   }
   Chat.findOne({ _id: chatroom })
     .then((data) => res.json(data))
@@ -17,10 +18,22 @@ router.get('/:chatroomID', async (req, res) => {
     });
 });
 
-router.post('/:chatroomID', async (req, res) => {
+router.get('/getAllChatrooms', async (req, res) => {
+  Chat.find({})
+    .then((data) => {
+      const filteredData = data.filter((ch) => ch._id.toString() !== global);
+      res.json(filteredData);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send();
+    });
+});
+
+router.post('/post/:chatroomID', async (req, res) => {
   let chatroom = req.params.chatroomID;
   if (chatroom === 'global') {
-    chatroom = '6098f15c0fff456a1458073f';
+    chatroom = global;
   }
   Chat.findOne({ _id: chatroom })
     .then((data) => {
@@ -34,6 +47,15 @@ router.post('/:chatroomID', async (req, res) => {
           res.status(500).send();
         });
     })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send();
+    });
+});
+
+router.post('/', async (req, res) => {
+  Chat.create(req.body)
+    .then((data) => res.json(data._id))
     .catch((error) => {
       console.log(error);
       res.status(500).send();

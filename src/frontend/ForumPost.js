@@ -1,22 +1,24 @@
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable class-methods-use-this */
 /* eslint-disable react/jsx-filename-extension */
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import {
-  Grommet, TextArea, Button, Box, Grid,
+  Grid, Box, Text, Button, TextArea,
 } from 'grommet';
 import { Send } from 'grommet-icons';
 
 const authFetch = require('./authFetch');
 
-class Chat extends Component {
+const queryString = window.location.pathname.split('/').pop();
+
+class ForumPost extends Component {
   constructor(props) {
     super(props);
     this.state = {
       chatText: '',
       localUsername: '',
-      msgs: [],
+      owner: '',
+      title: '',
+      msgs: [{ msg: 'loading...', sentBy: '', sentAt: '' }],
     };
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleButtonPress = this.handleButtonPress.bind(this);
@@ -28,6 +30,13 @@ class Chat extends Component {
     authFetch('/users/find')
       .then((data) => this.setState({ localUsername: data }))
       .catch((error) => console.log(error));
+
+    authFetch(`/chat/get/${queryString}`)
+      .then((data) => {
+        console.log(data.roomTitle);
+        this.setState({ msgs: data.msg, title: data.roomTitle, owner: data.owner });
+      })
+      .catch((error) => console.log(error));
   }
 
   handleTextChange(e) {
@@ -36,7 +45,7 @@ class Chat extends Component {
 
   handleButtonPress() {
     const { chatText, localUsername } = this.state;
-    authFetch('/chat/post/global', 'POST', { msg: chatText, sentBy: localUsername, sentAt: new Date() })
+    authFetch(`/chat/post/${queryString}`, 'POST', { msg: chatText, sentBy: localUsername, sentAt: new Date() })
       .then((data) => {
         this.setState({ msgs: data.msg, chatText: '' });
         document.getElementById('scrollable').scrollTop = document.getElementById('scrollable').scrollHeight;
@@ -46,8 +55,9 @@ class Chat extends Component {
 
   updateMessages() {
     const { msgs } = this.state;
-    authFetch('/chat/get/global')
+    authFetch(`/chat/get/${queryString}`)
       .then((data) => {
+        console.log(data.msg);
         if (msgs.length === 0
           || msgs[msgs.length - 1].sentAt !== data.msg[data.msg.length - 1].sentAt) {
           this.setState({ msgs: data.msg, chatText: '' });
@@ -57,9 +67,11 @@ class Chat extends Component {
   }
 
   render() {
-    const { chatText, localUsername, msgs } = this.state;
+    const {
+      title, localUsername, msgs, chatText, owner,
+    } = this.state;
     console.log(msgs);
-    const msgList = msgs.map((mes, index) => (
+    const msgList = msgs.slice(1).map((mes, index) => (
       <div key={index} style={{ marginBottom: 15 }}>
         <div>
           {(new Date(mes.sentAt)).toLocaleString()}
@@ -72,33 +84,42 @@ class Chat extends Component {
         </div>
       </div>
     ));
-    console.log(chatText);
     return (
-      <Grommet>
+      <Box border={{ color: 'accent-2', size: 'large' }} gap="medium">
         <Grid
-          rows={['medium', 'xxsmall']}
+          rows={['xxsmall', 'small', 'xxsmall', 'small', 'small']}
           areas={[
-            ['main', 'main'],
-            ['footer', 'footer'],
+            ['title'],
+            ['message'],
+            ['button'],
+            ['text'],
+            ['comment'],
           ]}
           gap="small"
         >
-
-          <Box id="scrollable" background="light-2" gridArea="main" overflow="scroll">
-            {msgList}
+          <Box gridArea="title" background="brand">
+            {title}
           </Box>
-
-          <Box style={{ background: 'linear-gradient(90deg, #964F4CFF 0%, #567572FF 100%)' }} gridArea="footer" direction="row">
-            <TextArea placeholder="What's up?" value={chatText} onChange={(e) => this.handleTextChange(e)} />
+          <Box gridArea="message" overflow="hidden">
+            {msgs[0].msg}
+          </Box>
+          <Box gridArea="button" direction="row" background="accent-3">
+            <Text>{owner}</Text>
+          </Box>
+          <Box style={{ background: 'linear-gradient(90deg, #964F4CFF 0%, #567572FF 100%)' }} gridArea="text" direction="row">
+            <TextArea placeholder="comment" value={chatText} onChange={(e) => this.handleTextChange(e)} />
             <Button disabled={localUsername === '' || chatText === ''} onClick={() => this.handleButtonPress()}>
               send
               <Send />
             </Button>
           </Box>
+          <Box id="scrollable" background="light-2" gridArea="comment" overflow="scroll">
+            {msgList}
+          </Box>
         </Grid>
-      </Grommet>
+      </Box>
     );
   }
 }
 
-export default Chat;
+export default ForumPost;
